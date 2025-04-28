@@ -11,6 +11,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useEditorStore } from "@/store/editorStore";
 import { BlockRenderer } from "@/components/BlockRenderer";
 import { v4 as uuidv4 } from "uuid";
+import { useSession } from "next-auth/react";
 
 export default function EditorPage() {
   const { blocks, addBlock, moveBlock } = useEditorStore();
@@ -32,15 +33,23 @@ export default function EditorPage() {
     }
   };
 
-  const saveSite = async () => {
+  const { data: session } = useSession();
+  
+  async function saveSite() {
+    if (!session?.user?.id) {
+      alert("Not logged in");
+      return;
+    }
+
     const res = await fetch("/api/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: "demo", // hardcoded for now
+        username: session.user.email?.split("@")[0] || "demo",
         site_name: "test-site",
+        user_id: session.user.id,
         data: blocks,
       }),
     });
