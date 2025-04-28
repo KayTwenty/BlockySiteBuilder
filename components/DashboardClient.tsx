@@ -52,7 +52,7 @@ export default function DashboardClient() {
 
       {/* Create Site Button */}
       <div className="mb-6">
-        <Link href="/editor">
+        <Link href="/templates">
           <button className="bg-blue-500 text-white p-3 rounded">
             + Create New Site
           </button>
