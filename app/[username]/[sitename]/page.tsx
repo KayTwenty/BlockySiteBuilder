@@ -40,7 +40,7 @@ export default async function PublicSitePage({ params }: Props) {
       ) : (
         blocks.map((block) => (
           <div key={block.id} className="mb-6">
-            <BlockRenderer block={block} />
+            <BlockRenderer block={block} editing={false} />
           </div>
         ))
       )}

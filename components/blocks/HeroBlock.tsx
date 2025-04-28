@@ -2,36 +2,42 @@
 
 import { useEditorStore } from "@/store/editorStore";
 
-export function HeroBlock({ id, content }: { id: string; content: any }) {
+export function HeroBlock({ id, content, editing = false }: { id: string; content: any; editing?: boolean }) {
   const updateBlock = useEditorStore((state) => state.updateBlock);
   const deleteBlock = useEditorStore((state) => state.deleteBlock);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation(); // <--- IMPORTANT
+  const handleHeadingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateBlock(id, { ...content, heading: e.target.value });
   };
 
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation(); // <--- IMPORTANT
-    deleteBlock(id);
+  const handleSubheadingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateBlock(id, { ...content, subheading: e.target.value });
   };
 
   return (
-    <section className="bg-blue-100 p-10 rounded-md text-center relative">
-      <button
-        onClick={handleDelete}
-        className="absolute top-2 right-2 text-xs bg-red-500 text-white rounded px-2 py-1"
-      >
-        Delete
-      </button>
+    <div className="relative p-10 bg-gray-100 rounded-lg text-center">
+      {editing && (
+        <button
+          onClick={() => deleteBlock(id)}
+          className="absolute top-2 right-2 text-xs bg-red-500 text-white rounded px-2 py-1"
+        >
+          Delete
+        </button>
+      )}
       <input
-        type="text"
         value={content.heading || ""}
-        onChange={handleChange}
-        placeholder="Hero Heading..."
-        className="text-3xl font-bold bg-transparent outline-none text-center w-full"
+        onChange={handleHeadingChange}
+        placeholder="Heading..."
+        className="text-4xl font-bold bg-transparent outline-none w-full text-center mb-2"
+        disabled={!editing}
       />
-      <p className="text-gray-600 mt-2">Catchy subtitle here!</p>
-    </section>
+      <input
+        value={content.subheading || ""}
+        onChange={handleSubheadingChange}
+        placeholder="Subheading..."
+        className="text-xl text-gray-600 bg-transparent outline-none w-full text-center"
+        disabled={!editing}
+      />
+    </div>
   );
 }

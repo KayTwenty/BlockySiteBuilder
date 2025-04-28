@@ -127,7 +127,7 @@ function SortableBlock({ block }: { block: any }) {
   
         {/* Actual Block Content */}
         <div className="p-6">
-          <BlockRenderer block={block} />
+          <BlockRenderer block={block} editing={true} />
         </div>
       </div>
     );
