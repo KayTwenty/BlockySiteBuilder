@@ -39,7 +39,7 @@ export function ImageBlock({ id, content, editing = false }: { id: string; conte
   };
 
   return (
-    <div className="relative p-6 border rounded bg-gray-50 text-center">
+    <div className="relative p-6 border-2 rounded-2xl bg-white hover:shadow-2xl transition-all duration-300">
       {/* Show Delete button only if editing */}
       {editing && (
         <button

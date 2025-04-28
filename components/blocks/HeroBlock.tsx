@@ -2,7 +2,15 @@
 
 import { useEditorStore } from "@/store/editorStore";
 
-export function HeroBlock({ id, content, editing = false }: { id: string; content: any; editing?: boolean }) {
+export function HeroBlock({
+  id,
+  content,
+  editing = false,
+}: {
+  id: string;
+  content: any;
+  editing?: boolean;
+}) {
   const updateBlock = useEditorStore((state) => state.updateBlock);
   const deleteBlock = useEditorStore((state) => state.deleteBlock);
 
@@ -15,7 +23,7 @@ export function HeroBlock({ id, content, editing = false }: { id: string; conten
   };
 
   return (
-    <div className="relative p-10 bg-gray-100 rounded-lg text-center">
+    <div className="relative p-6 border-2 rounded-2xl bg-white hover:shadow-2xl transition-all duration-300">
       {editing && (
         <button
           onClick={() => deleteBlock(id)}

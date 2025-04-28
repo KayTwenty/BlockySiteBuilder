@@ -11,7 +11,7 @@ export function TextBlock({ id, content, editing = false }: { id: string; conten
   };
 
   return (
-    <div className="relative p-6 border rounded">
+    <div className="relative p-6 border-2 rounded-2xl bg-white hover:shadow-2xl transition-all duration-300">
       {editing && (
         <button
           onClick={() => deleteBlock(id)}
@@ -26,7 +26,7 @@ export function TextBlock({ id, content, editing = false }: { id: string; conten
         placeholder="Type your text here..."
         className="w-full resize-none bg-transparent outline-none text-lg"
         rows={4}
-        disabled={!editing} // Lock editing when just viewing
+        disabled={!editing}
       />
     </div>
   );
