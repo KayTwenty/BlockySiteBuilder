@@ -33,17 +33,11 @@ export function ImageBlock({ id, content, editing = false }: { id: string; conte
     }
   };
 
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    deleteBlock(id);
-  };
-
   return (
-    <div className="relative p-6 border-2 rounded-2xl bg-white hover:shadow-2xl transition-all duration-300">
-      {/* Show Delete button only if editing */}
+    <div className="relative bg-green-50 border border-green-200 rounded-2xl p-6 text-center shadow hover:shadow-lg transition-all">
       {editing && (
         <button
-          onClick={handleDelete}
+          onClick={() => deleteBlock(id)}
           className="absolute top-2 right-2 text-xs bg-red-500 text-white rounded px-2 py-1"
         >
           Delete
@@ -51,11 +45,11 @@ export function ImageBlock({ id, content, editing = false }: { id: string; conte
       )}
 
       {content.imageUrl ? (
-        <img src={content.imageUrl} alt="Uploaded" className="max-w-full mx-auto rounded-md" />
+        <img src={content.imageUrl} alt="Uploaded" className="max-w-full mx-auto rounded-lg shadow-md" />
       ) : (
-        editing && ( // Only allow uploading new image when editing
-          <label className="block cursor-pointer bg-blue-100 border-dashed border-2 border-blue-300 p-6 rounded-md">
-            <p className="text-blue-500">Click to upload an image</p>
+        editing && (
+          <label className="block cursor-pointer bg-white border-2 border-dashed border-green-400 p-10 rounded-lg">
+            <p className="text-green-500">Click to upload an image</p>
             <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
           </label>
         )

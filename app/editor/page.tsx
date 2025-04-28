@@ -1,28 +1,16 @@
 "use client";
 
+import Sidebar from "@/components/Sidebar";
 import { DndContext, closestCenter } from "@dnd-kit/core";
-import {
-  SortableContext,
-  arrayMove,
-  useSortable,
-  verticalListSortingStrategy
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useEditorStore } from "@/store/editorStore";
+import { CSS } from "@dnd-kit/utilities";
 import { BlockRenderer } from "@/components/BlockRenderer";
-import { v4 as uuidv4 } from "uuid";
 import { useSession } from "next-auth/react";
 
 export default function EditorPage() {
-  const { blocks, addBlock, moveBlock } = useEditorStore();
-
-  const addNewBlock = (type: string) => {
-    addBlock({
-      id: uuidv4(),
-      type,
-      content: {},
-    });
-  };
+  const { blocks, moveBlock } = useEditorStore();
+  const { data: session } = useSession();
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
@@ -33,8 +21,6 @@ export default function EditorPage() {
     }
   };
 
-  const { data: session } = useSession();
-  
   async function saveSite() {
     if (!session?.user?.id) {
       alert("Not logged in");
@@ -60,75 +46,41 @@ export default function EditorPage() {
     } else {
       alert("Failed to save site.");
     }
-  };
+  }
 
   return (
-    <div className="flex h-screen relative">
+    <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-1/4 bg-gray-100 p-4">
-        <h2 className="text-lg font-bold mb-4">Blocks</h2>
-        <button className="block w-full bg-blue-500 text-white p-2 rounded mb-2" onClick={() => addNewBlock("hero")}>
-          Hero Section
-        </button>
-        <button className="block w-full bg-green-500 text-white p-2 rounded" onClick={() => addNewBlock("text")}>
-          Text Block
-        </button>
-        <button className="block w-full bg-yellow-500 text-white p-2 rounded mt-2" onClick={() => addNewBlock("image")}>
-          Image Block
-        </button>
-      </aside>
+      <Sidebar />
 
-      {/* Canvas */}
-      <main className="flex-1 bg-white p-10 overflow-y-auto">
-        {blocks.length === 0 && (
-          <p className="text-gray-400 text-center mt-20">Drag blocks here to start building.</p>
-        )}
-        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
-            <div className="space-y-6">
-              {blocks.map((block) => (
-                <SortableBlock key={block.id} block={block} />
-              ))}
+      {/* Editor Canvas */}
+      <main className="flex-1 bg-gray-50 p-10 overflow-y-auto relative">
+        <div className="max-w-4xl mx-auto space-y-10">
+          {blocks.length === 0 && (
+            <div className="text-center text-gray-400 mt-20 text-lg">
+              Start adding blocks to build your site!
             </div>
-          </SortableContext>
-        </DndContext>
-      </main>
+          )}
 
-      {/* Save Button (fixed to bottom right) */}
-      <button
-        className="fixed bottom-10 right-10 bg-purple-600 text-white p-4 rounded-full shadow-lg hover:bg-purple-700 transition"
-        onClick={saveSite}
-      >
-        Save Site
-      </button>
+          <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
+              {blocks.map((block) => (
+                <div key={block.id} className="bg-white rounded-2xl shadow p-6 transition-all">
+                  <BlockRenderer block={block} editing={true} />
+                </div>
+              ))}
+            </SortableContext>
+          </DndContext>
+        </div>
+
+        {/* Save Button */}
+        <button
+          onClick={saveSite}
+          className="fixed bottom-6 right-6 bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition"
+        >
+          Save Site
+        </button>
+      </main>
     </div>
   );
-}
-
-function SortableBlock({ block }: { block: any }) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: block.id });
-  
-    const style = {
-      transform: CSS.Transform.toString(transform),
-      transition,
-    };
-  
-    return (
-      <div ref={setNodeRef} style={style} className="relative border rounded shadow bg-white">
-        {/* Drag Handle */}
-        <div
-          {...attributes}
-          {...listeners}
-          className="flex items-center justify-center w-full h-10 bg-gray-200 cursor-grab rounded-t-md"
-          title="Drag here"
-        >
-          <div className="text-gray-600 text-xl">☰</div>
-        </div>
-  
-        {/* Actual Block Content */}
-        <div className="p-6">
-          <BlockRenderer block={block} editing={true} />
-        </div>
-      </div>
-    );
 }
