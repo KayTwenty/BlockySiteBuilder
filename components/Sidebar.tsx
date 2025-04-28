@@ -22,14 +22,29 @@ export default function Sidebar() {
 
         {/* Block Buttons */}
         <div className="space-y-4">
-          <button onClick={() => addNewBlock("hero")} className="bg-purple-600 hover:bg-purple-700 p-3 rounded w-full transition">
+          <button
+            onClick={() => addNewBlock("hero")}
+            className="bg-purple-600 hover:bg-purple-700 p-3 rounded w-full transition"
+          >
             ➕ Hero Section
           </button>
-          <button onClick={() => addNewBlock("text")} className="bg-blue-600 hover:bg-blue-700 p-3 rounded w-full transition">
+          <button
+            onClick={() => addNewBlock("text")}
+            className="bg-blue-600 hover:bg-blue-700 p-3 rounded w-full transition"
+          >
             ➕ Text Block
           </button>
-          <button onClick={() => addNewBlock("image")} className="bg-green-600 hover:bg-green-700 p-3 rounded w-full transition">
+          <button
+            onClick={() => addNewBlock("image")}
+            className="bg-green-600 hover:bg-green-700 p-3 rounded w-full transition"
+          >
             ➕ Image Block
+          </button>
+          <button
+            onClick={() => addNewBlock("button")}
+            className="bg-yellow-500 hover:bg-yellow-600 p-3 rounded w-full transition"
+          >
+            ➕ Button Block
           </button>
         </div>
       </div>
