@@ -2,7 +2,9 @@
 Just a website builder I've been working on for a couple of hours....
 
 ## You will need to add an .env file with these statements
-```
+```env
+NEXTAUTH_SECRET=your-random-secret
+NEXTAUTH_URL=http://localhost:3000
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=xxxxxxxxxxxxxxxx
 ```
